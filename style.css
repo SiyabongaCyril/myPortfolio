@@ -74,6 +74,14 @@ a:hover {
   cursor: default;
 }
 
+/* PROFILE PICTURE */
+#profile-pic{
+  background-color: white;
+  border-radius: 50%; /* This makes it circular */
+  border: 4px dotted #2E5BFF;
+}
+
+
 /* HAMBURGER MENU */
 
 #hamburger-nav {
