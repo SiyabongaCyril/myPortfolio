@@ -78,7 +78,7 @@ a:hover {
 #profile-pic{
   background-color: white;
   border-radius: 50%; /* This makes it circular */
-  border: 4px dotted #2E5BFF;
+  border: 2px dashed #2E5BFF;
 }
 
 
