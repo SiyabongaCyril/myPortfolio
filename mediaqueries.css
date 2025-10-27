@@ -20,6 +20,7 @@
     display: flex;
   }
   #experience,
+  #skills,
   .experience-details-container {
     margin-top: 2rem;
   }
@@ -27,77 +28,204 @@
   .section-container {
     display: block;
   }
+  
+  .projects-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+  
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+  
   .arrow {
     display: none;
   }
+  
   section,
   .section-container {
     height: fit-content;
   }
+  
   section {
     margin: 0 5%;
   }
+  
   .section__pic-container {
     width: 275px;
     height: 275px;
     margin: 0 auto 2rem;
   }
+  
   .about-containers {
     margin-top: 0;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .projects-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+
+  .project-img {
+    max-height: 400px;
+    object-fit: contain;
+  }
+  
+  .skill-tags {
+    justify-content: flex-start;
+  }
+  
+  .article-container {
+    gap: 1.5rem;
+  }
+  
+  article {
+    width: 8rem;
   }
 }
 
 @media screen and (max-width: 600px) {
   #contact,
   footer {
-    height: 40vh;
+    height: fit-content;
+    min-height: 40vh;
   }
+  
   #profile {
     height: 83vh;
     margin-bottom: 0;
   }
+  
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .project-img {
+    max-height: 350px;
+  }
+  
   article {
     font-size: 1rem;
+    width: 100%;
+    max-width: 10rem;
   }
+  
   footer nav {
     height: fit-content;
     margin-bottom: 2rem;
   }
+  
   .about-containers,
   .contact-info-upper-container,
   .btn-container {
     flex-wrap: wrap;
   }
+  
   .contact-info-container {
     margin: 0;
+    width: 100%;
   }
+  
   .contact-info-container p,
   .nav-links li a {
     font-size: 1rem;
   }
+  
   .experience-sub-title {
     font-size: 1.25rem;
   }
+  
   .logo {
     font-size: 1.5rem;
   }
+  
   .nav-links {
     flex-direction: column;
     gap: 0.5rem;
     text-align: center;
   }
+  
   .section__pic-container {
     width: auto;
     height: 46vw;
     justify-content: center;
   }
+  
   .section__text__p2 {
     font-size: 1.25rem;
   }
+  
   .title {
     font-size: 2rem;
   }
+  
   .text-container {
     text-align: justify;
+  }
+  
+  .btn {
+    min-height: 44px;
+    width: auto;
+    min-width: 8rem;
+  }
+  
+  .icon {
+    height: 2.5rem;
+  }
+  
+  .skill-category {
+    padding: 1.5rem;
+  }
+  
+  .skill-tag {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  section {
+    margin: 0 2%;
+  }
+  
+  .details-container {
+    padding: 1rem;
+  }
+  
+  .btn-container {
+    gap: 0.5rem;
+  }
+  
+  .btn {
+    font-size: 0.9rem;
+    padding: 0.8rem;
+  }
+  
+  .title {
+    font-size: 1.75rem;
+  }
+  
+  .section__text__p2 {
+    font-size: 1.1rem;
+  }
+}
+
+/* Touch device specific improvements */
+@media (hover: none) and (pointer: coarse) {
+  .icon {
+    height: 2.5rem;
+  }
+  
+  .btn {
+    min-height: 44px;
+  }
+  
+  .hamburger-icon {
+    height: 30px;
+    width: 36px;
+  }
+  
+  .skill-tag {
+    padding: 0.6rem 1.2rem;
   }
 }
