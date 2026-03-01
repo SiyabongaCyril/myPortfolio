@@ -1153,7 +1153,7 @@ footer p {
   color: var(--blue);
   letter-spacing: 3px;
   text-transform: uppercase;
-  margin-bottom: 1.5rem;
+  /* margin-bottom: 0.5rem; */
   font-family: monospace;
 }
 

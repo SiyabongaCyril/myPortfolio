@@ -1,140 +1,171 @@
 // ============================================
+// HTML SECTION INCLUDES
+// ============================================
+async function loadSections() {
+  const includeTargets = document.querySelectorAll('[data-include]');
+  if (!includeTargets.length) return;
+
+  for (const target of includeTargets) {
+    const path = target.getAttribute('data-include');
+    if (!path) continue;
+
+    try {
+      const response = await fetch(path, { cache: 'no-cache' });
+      if (!response.ok) {
+        target.innerHTML = `<section><p>Failed to load: ${path}</p></section>`;
+        continue;
+      }
+      target.innerHTML = await response.text();
+    } catch (error) {
+      target.innerHTML = `<section><p>Failed to load: ${path}</p></section>`;
+      console.error('Include load error:', path, error);
+    }
+  }
+}
+
+// ============================================
 // MENU TOGGLE FUNCTIONALITY
 // ============================================
 function toggleMenu() {
-  const menu = document.querySelector(".menu-links");
-  const icon = document.querySelector(".hamburger-icon");
-  const isOpen = menu.classList.toggle("open");
-  icon.classList.toggle("open");
-  icon.setAttribute("aria-expanded", isOpen);
+  const menu = document.querySelector('.menu-links');
+  const icon = document.querySelector('.hamburger-icon');
+  if (!menu || !icon) return;
+
+  const isOpen = menu.classList.toggle('open');
+  icon.classList.toggle('open');
+  icon.setAttribute('aria-expanded', isOpen);
 }
 
-// Close when clicking outside
-document.addEventListener('click', function(e) {
-  const nav = document.querySelector('.hamburger-menu');
-  const icon = document.querySelector('.hamburger-icon');
-  const menu = document.querySelector('.menu-links');
-  if (nav && !nav.contains(e.target) && menu && menu.classList.contains('open')) {
-    menu.classList.remove('open');
-    icon.classList.remove('open');
-    icon.setAttribute("aria-expanded", "false");
-  }
-});
+function initMenuAndScroll() {
+  document.addEventListener('click', function (e) {
+    const nav = document.querySelector('.hamburger-menu');
+    const icon = document.querySelector('.hamburger-icon');
+    const menu = document.querySelector('.menu-links');
 
-// ============================================
-// SMOOTH SCROLL
-// ============================================
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
-    const href = this.getAttribute('href');
-    if (href === '#') return;
-    const target = document.querySelector(href);
-    if (target) {
+    if (nav && !nav.contains(e.target) && menu && icon && menu.classList.contains('open')) {
+      menu.classList.remove('open');
+      icon.classList.remove('open');
+      icon.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      const href = this.getAttribute('href');
+      if (href === '#') return;
+
+      const target = document.querySelector(href);
+      if (!target) return;
+
       e.preventDefault();
       const menu = document.querySelector('.menu-links');
       if (menu && menu.classList.contains('open')) toggleMenu();
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    });
   });
-});
+}
 
 // ============================================
 // SCROLL ANIMATIONS
 // ============================================
-if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+function initScrollAnimations() {
+  const animated = document.querySelectorAll('[data-animate="fade-up"]');
 
-  document.querySelectorAll('[data-animate="fade-up"]').forEach(el => {
-    observer.observe(el);
-  });
-} else {
-  document.querySelectorAll('[data-animate="fade-up"]').forEach(el => {
-    el.style.opacity = '1';
-    el.style.transform = 'none';
-  });
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    animated.forEach(el => observer.observe(el));
+  } else {
+    animated.forEach(el => {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+    });
+  }
 }
 
 // ============================================
 // ACTIVE NAV + SCROLL EFFECTS
 // ============================================
-const sections = document.querySelectorAll('section[id]');
-const navLinks = document.querySelectorAll('#desktop-nav .nav-links a');
-const desktopNav = document.querySelector('#desktop-nav');
-const scrollToTopBtn = document.getElementById('scroll-to-top');
+function initActiveNavAndTopButton() {
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('#desktop-nav .nav-links a');
+  const desktopNav = document.querySelector('#desktop-nav');
+  const scrollToTopBtn = document.getElementById('scroll-to-top');
 
-function onScroll() {
-  const scrollY = window.pageYOffset;
+  function onScroll() {
+    const scrollY = window.pageYOffset;
 
-  if (desktopNav) desktopNav.classList.toggle('scrolled', scrollY > 60);
-  if (scrollToTopBtn) scrollToTopBtn.classList.toggle('visible', scrollY > 350);
+    if (desktopNav) desktopNav.classList.toggle('scrolled', scrollY > 60);
+    if (scrollToTopBtn) scrollToTopBtn.classList.toggle('visible', scrollY > 350);
 
-  let current = '';
-  sections.forEach(section => {
-    if (scrollY >= section.offsetTop - 120) current = section.id;
-  });
-  navLinks.forEach(link => {
-    link.classList.remove('active');
-    if (link.getAttribute('href') === `#${current}`) link.classList.add('active');
-  });
-}
+    let current = '';
+    sections.forEach(section => {
+      if (scrollY >= section.offsetTop - 120) current = section.id;
+    });
 
-window.addEventListener('scroll', onScroll, { passive: true });
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === `#${current}`) link.classList.add('active');
+    });
+  }
 
-// ============================================
-// SCROLL TO TOP BUTTON
-// ============================================
-if (scrollToTopBtn) {
-  scrollToTopBtn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-  scrollToTopBtn.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  if (scrollToTopBtn) {
+    scrollToTopBtn.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  });
+    });
+    scrollToTopBtn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+  }
 }
 
 // ============================================
 // CURRENT YEAR IN FOOTER
 // ============================================
-(function() {
+function initCurrentYear() {
   const yearEl = document.getElementById('current-year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
-})();
+}
 
 // ============================================
 // CONTACT FORM — AJAX SUBMIT VIA FORMSPREE
 // ============================================
-(function() {
+function initContactForm() {
   const form = document.getElementById('contact-form');
   if (!form) return;
 
-  const submitBtn   = form.querySelector('.form-submit');
+  const submitBtn = form.querySelector('.form-submit');
   const labelNormal = form.querySelector('.submit-label');
-  const labelSending= form.querySelector('.submit-sending');
-  const successMsg  = form.querySelector('.form-success');
-  const errorMsg    = form.querySelector('.form-error');
+  const labelSending = form.querySelector('.submit-sending');
+  const successMsg = form.querySelector('.form-success');
+  const errorMsg = form.querySelector('.form-error');
 
-  form.addEventListener('submit', async function(e) {
+  form.addEventListener('submit', async function (e) {
     e.preventDefault();
 
-    // Basic client-side validation
     let valid = true;
     form.querySelectorAll('[required]').forEach(field => {
       field.classList.remove('input-error');
-      if (!field.value.trim()) { field.classList.add('input-error'); valid = false; }
+      if (!field.value.trim()) {
+        field.classList.add('input-error');
+        valid = false;
+      }
     });
     if (!valid) return;
 
-    // Loading state
     submitBtn.disabled = true;
     labelNormal.hidden = true;
     labelSending.hidden = false;
@@ -142,13 +173,13 @@ if (scrollToTopBtn) {
     errorMsg.hidden = true;
 
     try {
-      const res = await fetch(form.action, {
+      const response = await fetch(form.action, {
         method: 'POST',
         body: new FormData(form),
-        headers: { 'Accept': 'application/json' }
+        headers: { Accept: 'application/json' }
       });
 
-      if (res.ok) {
+      if (response.ok) {
         successMsg.hidden = false;
         form.reset();
       } else {
@@ -163,8 +194,22 @@ if (scrollToTopBtn) {
     }
   });
 
-  // Clear error highlight on re-type
   form.querySelectorAll('[required]').forEach(field => {
     field.addEventListener('input', () => field.classList.remove('input-error'));
   });
-})();
+}
+
+async function initApp() {
+  await loadSections();
+  initMenuAndScroll();
+  initScrollAnimations();
+  initActiveNavAndTopButton();
+  initCurrentYear();
+  initContactForm();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
