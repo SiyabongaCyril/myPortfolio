@@ -5,22 +5,22 @@ async function loadSections() {
   const includeTargets = document.querySelectorAll('[data-include]');
   if (!includeTargets.length) return;
 
-  for (const target of includeTargets) {
+  await Promise.all([...includeTargets].map(async (target) => {
     const path = target.getAttribute('data-include');
-    if (!path) continue;
+    if (!path) return;
 
     try {
-      const response = await fetch(path, { cache: 'no-cache' });
+      const response = await fetch(path);
       if (!response.ok) {
         target.innerHTML = `<section><p>Failed to load: ${path}</p></section>`;
-        continue;
+        return;
       }
       target.innerHTML = await response.text();
     } catch (error) {
       target.innerHTML = `<section><p>Failed to load: ${path}</p></section>`;
       console.error('Include load error:', path, error);
     }
-  }
+  }));
 }
 
 // ============================================

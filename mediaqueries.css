@@ -1,3 +1,86 @@
+/* ---- Large desktop ---- */
+@media screen and (min-width: 1600px) {
+  .page-wrapper,
+  .container {
+    max-width: 1500px;
+  }
+
+  section {
+    padding: 6.5rem clamp(3rem, 6vw, 9rem);
+  }
+
+  .projects-grid {
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  }
+
+  .work-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* ---- Ultra-wide / 4K ---- */
+@media screen and (min-width: 1920px) {
+  .page-wrapper,
+  .container {
+    max-width: 1760px;
+  }
+
+  section {
+    padding: 7rem clamp(4rem, 8vw, 12rem);
+  }
+
+  .section-title {
+    font-size: clamp(2.2rem, 2.8vw, 3.2rem);
+  }
+
+  .section-sub {
+    font-size: 1rem;
+    max-width: 760px;
+  }
+
+  .projects-grid {
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  }
+
+  .project-body p {
+    font-size: 0.9rem;
+  }
+}
+
+/* ---- 4K / large TV ---- */
+@media screen and (min-width: 2560px) {
+  html {
+    font-size: 18px;
+  }
+
+  .page-wrapper,
+  .container {
+    max-width: 2200px;
+  }
+
+  .projects-grid {
+    grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+    gap: 2rem;
+  }
+
+  .project-image-wrap,
+  .coming-soon-wrap {
+    min-height: 290px;
+    max-height: 360px;
+  }
+}
+
+/* ---- TV profile ---- */
+@media screen and (min-width: 1920px) and (pointer: coarse) {
+  html {
+    font-size: 18px;
+  }
+
+  .btn {
+    min-height: 50px;
+  }
+}
+
 /* ---- Desktop ---- */
 @media screen and (max-width: 1400px) {
   .work-card.featured {
@@ -70,6 +153,10 @@
     gap: 2rem;
   }
 
+  .contact-form-jump {
+    margin-bottom: 1.5rem;
+  }
+
   .contact-sidebar {
     flex-direction: row;
     flex-wrap: wrap;
@@ -86,6 +173,10 @@
 
   .github-contrib {
     flex: 1 1 300px;
+  }
+
+  .contact-form-title {
+    text-align: left;
   }
 
   .contact-item {
@@ -136,6 +227,56 @@
     grid-template-columns: 1fr;
   }
 
+  .project-card {
+    display: grid;
+    grid-template-columns: minmax(130px, 42%) 1fr;
+  }
+
+  .project-image-wrap {
+    min-height: 100%;
+    max-height: none;
+    padding: 0.5rem;
+  }
+
+  .coming-soon-wrap {
+    min-height: 100%;
+    max-height: none;
+  }
+
+  .project-img {
+    height: 100%;
+    object-fit: contain;
+    object-position: top center;
+  }
+
+  .project-body {
+    padding: 1rem;
+    gap: 0.6rem;
+  }
+
+  .project-body h3 {
+    font-size: 0.95rem;
+  }
+
+  .project-body p {
+    font-size: 0.82rem;
+    line-height: 1.55;
+  }
+
+  .project-body .btn-container {
+    margin-top: 0.45rem;
+    gap: 0.6rem;
+  }
+
+  .project-body .btn-outline-sm {
+    font-size: 0.74rem;
+    padding: 0.45rem 0.95rem;
+  }
+
+  .project-tags span {
+    font-size: 0.68rem;
+  }
+
   .contact-item {
     flex: 1 1 100%;
   }
@@ -150,6 +291,13 @@
 
   .contact-form {
     padding: 1.5rem;
+  }
+
+  .contact-form-jump {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.8rem;
   }
 
   .about-cards {
@@ -228,6 +376,21 @@
   .designs-grid,
   .skills-grid {
     grid-template-columns: 1fr;
+  }
+
+  .project-card {
+    grid-template-columns: 1fr;
+  }
+
+  .project-image-wrap {
+    min-height: 230px;
+    max-height: 300px;
+    padding: 0.6rem;
+  }
+
+  .coming-soon-wrap {
+    min-height: 230px;
+    max-height: 300px;
   }
 
   #scroll-to-top {
@@ -392,8 +555,40 @@
     padding: 1.5rem 1rem;
   }
 
-  .project-title {
-    font-size: 1.25rem;
+  .project-image-wrap,
+  .coming-soon-wrap {
+    min-height: 200px;
+    max-height: 260px;
+    padding: 0.45rem;
+  }
+
+  .project-body {
+    padding: 0.9rem;
+    gap: 0.5rem;
+  }
+
+  .project-body h3 {
+    font-size: 0.9rem;
+  }
+
+  .project-body p {
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+
+  .project-tags span {
+    font-size: 0.64rem;
+    padding: 0.2rem 0.5rem;
+  }
+
+  .project-body .btn-outline-sm {
+    font-size: 0.7rem;
+    padding: 0.42rem 0.8rem;
+  }
+
+  .menu-links a {
+    padding: 0.8rem 1.1rem;
+    font-size: 0.9rem;
   }
 }
 
@@ -418,7 +613,7 @@
   }
 
   .hamburger-icon {
-    height: 30px;
-    width: 36px;
+    height: 20px;
+    width: 26px;
   }
 }
