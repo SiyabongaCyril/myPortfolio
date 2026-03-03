@@ -13,70 +13,78 @@
   <link rel="icon" type="image/x-icon" href="./assets/favicon2.png">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
 </head>
 
 <body>
-  <div class="page-wrapper">
 
   <nav id="desktop-nav">
-    <a href="#hero" class="logo">siya.dev</a>
-    <div>
-      <ul class="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#work">Work</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
+    <div class="container nav-container">
+      <a href="#hero" class="logo">siya.dev</a>
+      <div>
+        <ul class="nav-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#work">Work</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
     </div>
   </nav>
 
   <nav id="hamburger-nav">
-    <a href="#hero" class="logo">siya.dev</a>
-    <div class="hamburger-menu">
-      <div class="hamburger-icon" role="button" aria-label="Toggle navigation menu" aria-controls="mobile-menu"
-        aria-expanded="false" tabindex="0" onclick="toggleMenu()"
-        onkeydown="if(event.key==='Enter'||event.key===' '){toggleMenu()}">
-        <span></span>
-        <span></span>
-        <span></span>
+    <div class="container nav-container">
+      <a href="#hero" class="logo">siya.dev</a>
+      <div class="hamburger-menu">
+        <div class="hamburger-icon" role="button" aria-label="Toggle navigation menu" aria-controls="mobile-menu"
+          aria-expanded="false" tabindex="0" onclick="toggleMenu()"
+          onkeydown="if(event.key==='Enter'||event.key===' '){toggleMenu()}">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <ul id="mobile-menu" class="menu-links">
+          <li><a class="menu-item" href="#about" onclick="toggleMenu()">About</a></li>
+          <li><a class="menu-item" href="#skills" onclick="toggleMenu()">Skills</a></li>
+          <li><a class="menu-item" href="#work" onclick="toggleMenu()">Work</a></li>
+          <li><a class="menu-item" href="#projects" onclick="toggleMenu()">Projects</a></li>
+          <li><a class="menu-item" href="#contact" onclick="toggleMenu()">Contact</a></li>
+        </ul>
       </div>
-      <ul id="mobile-menu" class="menu-links">
-        <li><a class="menu-item" href="#about" onclick="toggleMenu()">About</a></li>
-        <li><a class="menu-item" href="#skills" onclick="toggleMenu()">Skills</a></li>
-        <li><a class="menu-item" href="#work" onclick="toggleMenu()">Work</a></li>
-        <li><a class="menu-item" href="#projects" onclick="toggleMenu()">Projects</a></li>
-        <li><a class="menu-item" href="#contact" onclick="toggleMenu()">Contact</a></li>
-      </ul>
     </div>
   </nav>
 
-  <main id="content-root">
-    <div data-include="sections/hero.html"></div>
-    <div data-include="sections/about.html"></div>
-    <div data-include="sections/skills.html"></div>
-    <div data-include="sections/work.html"></div>
-    <div data-include="sections/projects.html"></div>
-    <div data-include="sections/contact.html"></div>
-  </main>
+  <div class="page-wrapper">
+    <main id="content-root">
+      <div data-include="sections/hero.html"></div>
+      <div data-include="sections/about.html"></div>
+      <div data-include="sections/skills.html"></div>
+      <div data-include="sections/work.html"></div>
+      <div data-include="sections/projects.html"></div>
+      <div data-include="sections/contact.html"></div>
+    </main>
 
-  <footer>
-    <nav>
-      <ul class="nav-links">
-        <li><a href="#about">About</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#work">Work</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
-    <p>&copy; <span id="current-year"></span> Siyabonga Ntshingila. Built with purpose.</p>
-  </footer>
+    <footer>
+      <div class="container footer-container">
+        <nav>
+          <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#work">Work</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </nav>
+        <p>&copy; <span id="current-year"></span> Siyabonga Ntshingila. Built with purpose.</p>
+      </div>
+    </footer>
   </div>
 
   <button id="scroll-to-top" aria-label="Scroll to top" title="Back to top">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+      stroke-linecap="round" stroke-linejoin="round">
       <polyline points="18 15 12 9 6 15"></polyline>
     </svg>
   </button>
