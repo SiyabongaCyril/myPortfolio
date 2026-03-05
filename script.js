@@ -70,6 +70,7 @@ function initMenuAndScroll() {
 // ============================================
 function initScrollAnimations() {
   const animated = document.querySelectorAll('[data-animate="fade-up"]');
+  const staggerGroups = document.querySelectorAll('[data-stagger]');
 
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     const observer = new IntersectionObserver((entries) => {
@@ -82,10 +83,32 @@ function initScrollAnimations() {
     }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
     animated.forEach(el => observer.observe(el));
+
+    // Stagger groups: assign delay to each child then observe parent
+    const staggerObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const children = entry.target.children;
+          for (let i = 0; i < children.length; i++) {
+            children[i].style.transitionDelay = `${i * 0.08}s`;
+          }
+          entry.target.classList.add('visible');
+          staggerObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' });
+
+    staggerGroups.forEach(el => staggerObserver.observe(el));
   } else {
     animated.forEach(el => {
       el.style.opacity = '1';
       el.style.transform = 'none';
+    });
+    staggerGroups.forEach(el => {
+      [...el.children].forEach(child => {
+        child.style.opacity = '1';
+        child.style.transform = 'none';
+      });
     });
   }
 }

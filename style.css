@@ -1,16 +1,21 @@
 /* GENERAL */
 
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap");
 
 :root {
-  /* Dark Navy Theme */
-  --bg: #080D1A;
-  --bg-card: #0D1428;
+  /* Dark Navy Theme — Siya's palette */
+  --bg: #06091A;
+  --bg-card: #0C1225;
   --bg-card-hover: #111C36;
-  --bg-nav: rgba(8, 13, 26, 0.92);
+  --bg-nav: rgba(6, 9, 26, 0.92);
   --blue: #2E5BFF;
   --blue-light: #5B7FFF;
   --blue-dim: rgba(46, 91, 255, 0.14);
+  --purple: #7B5FFF;
+  --purple-light: #9B85FF;
+  --purple-dim: rgba(123, 95, 255, 0.14);
+  --accent-gradient: linear-gradient(135deg, var(--blue) 0%, var(--purple) 100%);
+  --accent-glow: 0 0 30px rgba(46, 91, 255, 0.25), 0 0 80px rgba(123, 95, 255, 0.1);
   --red: #FF3B3B;
   --red-dim: rgba(255, 59, 59, 0.14);
   --white: #FFFFFF;
@@ -31,7 +36,7 @@
   --text-medium: #7A849A;
   --text-light: #4A5568;
   --border-light: rgba(255, 255, 255, 0.1);
-  --bg-light: #0D1428;
+  --bg-light: #0C1225;
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
@@ -47,7 +52,7 @@
 }
 
 body {
-  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-family: "Inter", system-ui, sans-serif;
   overflow-x: hidden;
   background-color: var(--bg);
   color: var(--text);
@@ -58,8 +63,8 @@ body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background-image: radial-gradient(rgba(46, 91, 255, 0.08) 1px, transparent 1px);
-  background-size: 28px 28px;
+  background-image: radial-gradient(rgba(46, 91, 255, 0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
   pointer-events: none;
   z-index: 0;
 }
@@ -225,6 +230,7 @@ a:hover {
 }
 
 .logo {
+  font-family: "Space Grotesk", system-ui, sans-serif;
   font-size: 1.4rem;
   font-weight: 700;
   color: var(--white);
@@ -380,14 +386,18 @@ section {
 .section-label {
   font-size: 0.82rem;
   font-weight: 600;
-  color: var(--blue);
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   letter-spacing: 2px;
   text-transform: uppercase;
   margin-bottom: 0.75rem;
-  font-family: monospace;
+  font-family: "Space Grotesk", monospace;
 }
 
 .section-title {
+  font-family: "Space Grotesk", system-ui, sans-serif;
   font-size: clamp(1.75rem, 3vw, 2.6rem);
   font-weight: 700;
   color: var(--white);
@@ -831,6 +841,40 @@ footer p {
   transform: translateY(0);
 }
 
+/* Stagger animation system — children with [data-stagger] delay based on index */
+[data-stagger] > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+[data-stagger].visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Hero entrance sequence */
+.hero-content > * {
+  opacity: 0;
+  transform: translateY(18px);
+  animation: heroEntrance 0.6s ease-out forwards;
+}
+
+.hero-content > *:nth-child(1) { animation-delay: 0.1s; }
+.hero-content > *:nth-child(2) { animation-delay: 0.25s; }
+.hero-content > *:nth-child(3) { animation-delay: 0.4s; }
+.hero-content > *:nth-child(4) { animation-delay: 0.5s; }
+.hero-content > *:nth-child(5) { animation-delay: 0.6s; }
+.hero-content > *:nth-child(6) { animation-delay: 0.7s; }
+.hero-content > *:nth-child(7) { animation-delay: 0.8s; }
+
+@keyframes heroEntrance {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* ============================================
    HERO SECTION
    ============================================ */
@@ -848,20 +892,35 @@ footer p {
 .hero-content {
   flex: 1;
   max-width: 600px;
-  animation: fadeUp 0.8s ease-out forwards;
 }
 
 .hero-tag {
   font-size: 0.82rem;
   font-weight: 600;
-  color: var(--blue);
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   letter-spacing: 3px;
   text-transform: uppercase;
-  /* margin-bottom: 0.5rem; */
-  font-family: monospace;
+  font-family: "Space Grotesk", monospace;
+}
+
+.hero-tag::after {
+  content: '█';
+  display: inline-block;
+  margin-left: 2px;
+  -webkit-text-fill-color: var(--blue);
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 .hero-title {
+  font-family: "Space Grotesk", system-ui, sans-serif;
   font-size: clamp(1.7rem, 4vw, 3.4rem);
   font-weight: 700;
   line-height: 1.18;
@@ -871,7 +930,10 @@ footer p {
 }
 
 .accent-blue {
-  color: var(--blue);
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .accent-red {
@@ -901,6 +963,38 @@ footer p {
   border: 1px solid var(--border-subtle);
   border-radius: 3rem;
   padding: 0.35rem 1rem;
+}
+
+.hero-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.84rem;
+  color: var(--text-dim);
+  padding: 0.5rem 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius);
+  border-left: 3px solid var(--blue);
+}
+
+.hero-status strong {
+  color: var(--white);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 8px rgba(74, 222, 128, 0.6);
+  animation: statusPulse 2s ease-in-out infinite;
+}
+
+@keyframes statusPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
 }
 
 #socials-container {
@@ -951,14 +1045,14 @@ footer p {
   height: 300px;
   border-radius: 50%;
   padding: 4px;
-  background: linear-gradient(135deg, var(--blue), var(--blue-light), #7B5FFF);
-  box-shadow: 0 8px 40px rgba(46, 91, 255, 0.28);
+  background: var(--accent-gradient);
+  box-shadow: var(--accent-glow);
   transition: transform var(--transition), box-shadow var(--transition);
 }
 
 .profile-pic-wrapper:hover {
   transform: scale(1.04) rotate(2deg);
-  box-shadow: 0 12px 50px rgba(46, 91, 255, 0.42);
+  box-shadow: 0 0 40px rgba(46, 91, 255, 0.35), 0 0 100px rgba(123, 95, 255, 0.18);
 }
 
 #profile-pic {
@@ -1072,6 +1166,7 @@ footer p {
 }
 
 .timeline-content h4 {
+  font-family: "Space Grotesk", system-ui, sans-serif;
   font-size: 1rem;
   font-weight: 700;
   color: var(--white);
@@ -1104,13 +1199,15 @@ footer p {
 .about-card {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
+  border-left: 3px solid var(--blue);
+  border-radius: var(--radius) var(--radius-lg) var(--radius-lg) var(--radius);
   padding: 1.5rem;
   transition: all var(--transition);
 }
 
 .about-card:hover {
   border-color: var(--border);
+  border-left-color: var(--purple);
   background: var(--bg-card-hover);
 }
 
@@ -1149,6 +1246,7 @@ footer p {
 
 .drives-card {
   border-color: rgba(46, 91, 255, 0.22);
+  border-left: 3px solid var(--purple);
 }
 
 .drives-title {
@@ -1193,6 +1291,24 @@ footer p {
   border-radius: var(--radius-lg);
   padding: 1.75rem;
   transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-category::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent-gradient);
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.skill-category:hover::before {
+  opacity: 1;
 }
 
 .skill-category:hover {
@@ -1203,12 +1319,22 @@ footer p {
 }
 
 .skill-category-title {
+  font-family: "Space Grotesk", system-ui, sans-serif;
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1.8px;
   color: var(--blue);
   margin-bottom: 1.25rem;
+}
+
+/* First skill category (Core Stack) gets special treatment */
+.skill-category:first-child {
+  border-color: rgba(46, 91, 255, 0.2);
+}
+
+.skill-category:first-child::before {
+  opacity: 1;
 }
 
 .skill-tags {
@@ -1276,8 +1402,9 @@ footer p {
   left: 0;
   right: 0;
   height: 2px;
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-blue);
+  background: var(--accent-gradient);
+  opacity: 0;
+  transition: opacity var(--transition);
 }
 
 .work-card:hover::before {
@@ -1329,6 +1456,7 @@ footer p {
 }
 
 .work-card h3 {
+  font-family: "Space Grotesk", system-ui, sans-serif;
   font-size: 1.05rem;
   font-weight: 700;
   color: var(--white);
@@ -1444,11 +1572,27 @@ footer p {
   height: 100%;
 }
 
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent-gradient);
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
 .project-card:hover {
   border-color: var(--border);
   background: var(--bg-card-hover);
   transform: translateY(-5px);
   box-shadow: var(--shadow-blue);
+}
+
+.project-card:hover::before {
+  opacity: 1;
 }
 
 .project-image-wrap {
@@ -1496,6 +1640,7 @@ footer p {
 }
 
 .project-body h3 {
+  font-family: "Space Grotesk", system-ui, sans-serif;
   font-size: 1rem;
   font-weight: 700;
   color: var(--white);
@@ -1609,6 +1754,18 @@ footer p {
   flex-direction: column;
   gap: 1.2rem;
   transition: border-color var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-form::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent-gradient);
 }
 
 .contact-form:focus-within {
