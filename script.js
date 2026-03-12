@@ -175,9 +175,11 @@ function initContactForm() {
   const labelSending = form.querySelector('.submit-sending');
   const successMsg = form.querySelector('.form-success');
   const errorMsg = form.querySelector('.form-error');
+  const defaultErrorText = errorMsg ? errorMsg.textContent.trim() : '';
 
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
+    let willFallbackToNativeSubmit = false;
 
     let valid = true;
     form.querySelectorAll('[required]').forEach(field => {
@@ -194,6 +196,7 @@ function initContactForm() {
     labelSending.hidden = false;
     successMsg.hidden = true;
     errorMsg.hidden = true;
+    if (errorMsg && defaultErrorText) errorMsg.textContent = defaultErrorText;
 
     try {
       const response = await fetch(form.action, {
@@ -206,11 +209,30 @@ function initContactForm() {
         successMsg.hidden = false;
         form.reset();
       } else {
-        errorMsg.hidden = false;
+        let serverMessage = '';
+        try {
+          const data = await response.json();
+          serverMessage = data?.error || data?.message || '';
+        } catch {
+          // Keep a generic fallback message if the API does not return JSON.
+        }
+
+        // If AJAX is blocked in Formspree settings, submit natively as a fallback.
+        if (response.status === 403 && /submit via AJAX/i.test(serverMessage)) {
+          willFallbackToNativeSubmit = true;
+          HTMLFormElement.prototype.submit.call(form);
+          return;
+        }
+
+        if (errorMsg) {
+          errorMsg.textContent = serverMessage || defaultErrorText || 'Something went wrong. Try emailing directly instead.';
+          errorMsg.hidden = false;
+        }
       }
     } catch {
-      errorMsg.hidden = false;
+      if (errorMsg) errorMsg.hidden = false;
     } finally {
+      if (willFallbackToNativeSubmit) return;
       submitBtn.disabled = false;
       labelNormal.hidden = false;
       labelSending.hidden = true;

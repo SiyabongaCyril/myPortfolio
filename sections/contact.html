@@ -47,6 +47,21 @@
 
     <div class="contact-form-wrap">
       <h3 class="contact-form-title">Or send me an email below</h3>
+      <!--
+        Contact Form
+        
+        Purpose: Submits user inquiries to Formspree email service
+        
+        Attributes:
+        - id: "contact-form" - Unique identifier for form manipulation via JavaScript
+        - class: "contact-form" - CSS class for styling the form
+        - action: "https://formspree.io/f/xnjbyqog" - Formspree endpoint URL for form submission
+        - method: "POST" - HTTP method for sending form data
+        
+        Note: The Formspree endpoint ID (xnjbyqog) will be visible in the HTML source
+        and network requests. Consider regenerating this form ID if it has been exposed
+        publicly or if you no longer want to receive submissions to this endpoint.
+      -->
       <form id="contact-form" class="contact-form" action="https://formspree.io/f/xnjbyqog" method="POST">
         <div class="form-row">
           <div class="form-group">
