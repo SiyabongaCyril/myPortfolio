@@ -244,6 +244,77 @@ function initContactForm() {
   });
 }
 
+/**
+ * Image/Project Card Modal Logic
+ */
+function initProjectModal() {
+  const modal = document.getElementById('image-modal');
+  const modalImg = document.getElementById('modal-img');
+  const captionText = document.getElementById('modal-caption');
+  const closeBtn = document.querySelector('.modal-close');
+
+  if (!modal || !modalImg || !closeBtn) return;
+
+  function openModal(imgSrc, altText, caption) {
+    modal.style.display = 'flex';
+    // Small timeout to allow display:flex to take effect before opacity transition
+    setTimeout(() => {
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+    }, 10);
+    modalImg.src = imgSrc;
+    modalImg.alt = altText;
+    captionText.textContent = caption || altText;
+    document.body.style.overflow = 'hidden'; // Prevent scrolling
+  }
+
+  function closeModal() {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = ''; // Restore scrolling
+    // Wait for transition before hiding
+    setTimeout(() => {
+      if (!modal.classList.contains('open')) {
+        modal.style.display = 'none';
+      }
+    }, 300);
+  }
+
+  // Use event delegation for dynamically loaded sections
+  document.addEventListener('click', (e) => {
+    // Ensure we don't trigger modal for links, buttons or interactive elements inside the card
+    if (e.target.closest('a') || e.target.closest('button') || e.target.closest('.modal-close')) return;
+
+    // Check if clicked element or its parent is a project-image-wrap or project-card
+    const imageWrap = e.target.closest('.project-image-wrap');
+    const projectCard = e.target.closest('.project-card:not(.coming-soon-card)');
+
+    if (imageWrap || projectCard) {
+      // Find the image within this card
+      const target = imageWrap || projectCard;
+      const img = target.querySelector('.project-img');
+      const title = target.querySelector('h3')?.textContent || '';
+
+      if (img && img.src) {
+        openModal(img.src, img.alt, title);
+      }
+    }
+  });
+
+  closeBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal || e.target.classList.contains('modal-content-wrapper')) {
+      closeModal();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('open')) {
+      closeModal();
+    }
+  });
+}
+
 async function initApp() {
   await loadSections();
   initMenuAndScroll();
@@ -251,6 +322,7 @@ async function initApp() {
   initActiveNavAndTopButton();
   initCurrentYear();
   initContactForm();
+  initProjectModal();
 }
 
 if (document.readyState === 'loading') {
