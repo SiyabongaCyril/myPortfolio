@@ -1,4 +1,10 @@
 /* ---- Large desktop ---- */
+@media screen and (min-width: 1024px) {
+  .contact-intro {
+    white-space: nowrap;
+  }
+}
+
 @media screen and (min-width: 1600px) {
   .page-wrapper,
   .container {
@@ -183,6 +189,7 @@
 
   .contact-form-title {
     text-align: left;
+    margin-bottom: 1rem;
   }
 
   .contact-item {

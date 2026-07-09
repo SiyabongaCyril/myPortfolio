@@ -164,7 +164,7 @@ function initCurrentYear() {
 }
 
 // ============================================
-// CONTACT FORM — AJAX SUBMIT VIA FORMSPREE
+// CONTACT FORM ΓÇö AJAX SUBMIT VIA FORMSPREE
 // ============================================
 function initContactForm() {
   const form = document.getElementById('contact-form');
@@ -255,53 +255,79 @@ function initProjectModal() {
 
   if (!modal || !modalImg || !closeBtn) return;
 
-  function openModal(imgSrc, altText, caption) {
+  modal.style.display = 'none';
+
+  let lastFocusedEl = null;
+
+  document.querySelectorAll('.project-card:not(.coming-soon-card)').forEach(card => {
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('role', 'button');
+    const title = card.querySelector('h3')?.textContent?.trim();
+    card.setAttribute('aria-label', title ? `View larger image for ${title}` : 'View larger project image');
+  });
+
+  function getFocusableModalElements() {
+    return Array.from(modal.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])'))
+      .filter(el => el.offsetParent !== null);
+  }
+
+  function openModal(imgSrc, altText, caption, triggerEl) {
+    lastFocusedEl = triggerEl || document.activeElement;
     modal.style.display = 'flex';
-    // Small timeout to allow display:flex to take effect before opacity transition
     setTimeout(() => {
       modal.classList.add('open');
       modal.setAttribute('aria-hidden', 'false');
+      closeBtn.focus();
     }, 10);
     modalImg.src = imgSrc;
     modalImg.alt = altText;
     captionText.textContent = caption || altText;
-    document.body.style.overflow = 'hidden'; // Prevent scrolling
+    document.body.style.overflow = 'hidden';
   }
 
   function closeModal() {
     modal.classList.remove('open');
     modal.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = ''; // Restore scrolling
-    // Wait for transition before hiding
+    document.body.style.overflow = '';
     setTimeout(() => {
       if (!modal.classList.contains('open')) {
         modal.style.display = 'none';
       }
     }, 300);
+    if (lastFocusedEl) {
+      lastFocusedEl.focus();
+      lastFocusedEl = null;
+    }
   }
 
-  // Use event delegation for dynamically loaded sections
+  function openFromCard(card, triggerEl) {
+    const img = card.querySelector('.project-img');
+    const title = card.querySelector('h3')?.textContent || '';
+    if (img?.src) {
+      openModal(img.src, img.alt, title, triggerEl);
+    }
+  }
+
   document.addEventListener('click', (e) => {
-    // Ensure we don't trigger modal for links, buttons or interactive elements inside the card
     if (e.target.closest('a') || e.target.closest('button') || e.target.closest('.modal-close')) return;
 
-    // Check if clicked element or its parent is a project-image-wrap or project-card
-    const imageWrap = e.target.closest('.project-image-wrap');
-    const projectCard = e.target.closest('.project-card:not(.coming-soon-card)');
+    const card = e.target.closest('.project-card:not(.coming-soon-card)');
+    if (card) openFromCard(card, card);
+  });
 
-    if (imageWrap || projectCard) {
-      // Find the image within this card
-      const target = imageWrap || projectCard;
-      const img = target.querySelector('.project-img');
-      const title = target.querySelector('h3')?.textContent || '';
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    if (e.target.closest('a') || e.target.closest('button')) return;
 
-      if (img && img.src) {
-        openModal(img.src, img.alt, title);
-      }
+    const card = e.target.closest('.project-card:not(.coming-soon-card)');
+    if (card) {
+      e.preventDefault();
+      openFromCard(card, card);
     }
   });
 
   closeBtn.addEventListener('click', closeModal);
+
   modal.addEventListener('click', (e) => {
     if (e.target === modal || e.target.classList.contains('modal-content-wrapper')) {
       closeModal();
@@ -309,8 +335,26 @@ function initProjectModal() {
   });
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('open')) {
+    if (!modal.classList.contains('open')) return;
+
+    if (e.key === 'Escape') {
       closeModal();
+      return;
+    }
+
+    if (e.key === 'Tab') {
+      const focusable = getFocusableModalElements();
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable.at(-1);
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     }
   });
 }
